@@ -41,7 +41,7 @@ class CreateAuthCode(generics.GenericAPIView):
             saveauth = serializer.save()
             saveauth.auth_code = auth_key
             saveauth.save()
-            return Response({'This is your code %s'%(auth_key)}, status=status.HTTP_200_OK)
+            return Response({'This is your code %s'%(auth_key)}, status=status.HTTP_201_CREATED)
         
 class Signin(generics.GenericAPIView):
     serializer_class = AuthTokenSerializer
