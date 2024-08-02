@@ -50,7 +50,6 @@ class User(AbstractBaseUser):
     first_name = models.CharField(max_length=50, blank=True, null=True, default='')
     last_name = models.CharField(max_length=50, blank=True, null=True, default='')
     email = LowercaseEmailField(max_length=50, unique=True)
-    username = models.CharField(max_length=50, unique=True)
     phone = models.CharField(max_length=100, blank=True, null=True, default="", unique=True)
     gender = models.BooleanField(default=True)
     team = models.CharField(max_length=50, blank=True, null=True, default='')

@@ -67,11 +67,10 @@ class AuthTokenSerializer(serializers.Serializer):
         return attrs
 
 class SignupSerializer(serializers.ModelSerializer):
-    referral = serializers.CharField(max_length=100, required=False, allow_blank=True)
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email', 'phone_number', 'gender', 'team', 'auth_code', 'password')
+        fields = ('first_name', 'last_name', 'email', 'phone', 'gender', 'team', 'auth_code', 'password')
         extra_kwargs = {'password': {'write_only': True}}  # Ensure password is write-only
     
     def create(self, validated_data):
@@ -153,52 +152,3 @@ class SignupSerializer(serializers.ModelSerializer):
 #         user.save()
 
 #         return user
-
-    
-# class AuthTokenSerializer(serializers.Serializer):
-#     phone_number = serializers.CharField(
-#         label=_("Phone_Number"),
-#         write_only=True
-#     )
-#     password = serializers.CharField(
-#         label=_("Password"),
-#         style={'input_type': 'password'},
-#         trim_whitespace=False,
-#         write_only=True
-#     )
-#     token = serializers.CharField(
-#         label=_("Token"),
-#         read_only=True
-#     )
-
-#     def validate(self, attrs):
-#         phone_number = attrs.get('phone_number')
-#         password = attrs.get('password')
-    
-#         if phone_number and password:
-#             user = authenticate(request=self.context.get('request'),
-#                                 phone_number=phone_number, password=password)
-
-#             # The authenticate call simply returns None for is_active=False
-#             # users. (Assuming the default ModelBackend authentication
-#             # backend.)
-#             if not user:
-#                 # msg = _('Unable to log in with provided credentials.')
-#                 msg =  ({"error": "Incorrect login details"})
-#                 raise serializers.ValidationError(msg)
-#         else:
-#             msg = _('Must include "phone_number" and "password".')
-#             raise serializers.ValidationError(msg)
-
-#         attrs['user'] = user
-#         return attrs
-
-# class RoleSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Roles
-#         fields = ['role_name']
-
-# class SectorSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Sectors
-#         fields = ['sector_name']

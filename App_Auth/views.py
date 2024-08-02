@@ -13,6 +13,7 @@ from . serializers import *
 import re
 from django.db.models import Q
 from functools import wraps
+from rest_framework.decorators import action
 
 
 def handle_exeptions(func):
@@ -52,11 +53,12 @@ def is_valid_email(email):
 #             saveauth.save()
 #             return Response({'This is your code %s'%(auth_key)}, status=status.HTTP_201_CREATED)
 
-class AuthViewSet(viewsets.ModelViewSet):
+class AuthViewSets(viewsets.ModelViewSet):
     serializer_class = AuthTokenSerializer
-    # queryset = User.objects.all()
+    queryset = User.objects.all()
 
     @handle_exeptions
+    @action(detail=False, methods=['post'])
     def signin(self, request):
         email_or_phone = request.data['email_or_phone']
         checkUser = User.objects.filter(Q(email=email_or_phone) | Q(phone=email_or_phone)).first()
@@ -94,7 +96,8 @@ class AuthViewSet(viewsets.ModelViewSet):
             return Response(response_data, status=status.HTTP_200_OK)
     
 
-    @handle_exeptions
+    # @handle_exeptions
+    @action(detail=False, methods=['post'])
     def signup(self, request, *args, **kwargs):
         email = request.data['email']
         phone = request.data['phone']
@@ -115,22 +118,20 @@ class AuthViewSet(viewsets.ModelViewSet):
             _, token = AuthToken.objects.create(the_user)
         
             return Response({
-                'user_info':{
-                    'ID': the_user.id,
-                    'First Name': the_user.first_name,
-                    'Last Name': the_user.last_name,
-                    'Phone Number': the_user.phone,
-                    'Email': the_user.email,
-                    "Gender": the_user.gender,
-                    'Role': the_user.role,
-                    'Sector': the_user.sector,
-                    
+                "status": "success",
+                "message": "Signup successful",
+                "data": {
+                    'id': the_user.id,
+                    'first_name': the_user.first_name,
+                    'last_name': the_user.last_name,
+                    'phone': the_user.phone,
+                    'email': the_user.email,
+                    "gender": the_user.gender,
+                    'role': the_user.role,
+                    'rector': the_user.sector,
                 },
             # 'token': token
             }, status=status.HTTP_201_CREATED)
-    
-class Signup(viewsets.ModelViewSet):
-    serializer_class = SignupSerializer
     
     
 

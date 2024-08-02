@@ -27,8 +27,8 @@ schema_view = get_schema_view(
 
 urlpatterns = [
    # path('create_auth_code/', CreateAuthCode.as_view(), name='create_auth_code'), # auth code
-   path('signin/', AuthViewSet.as_view({"post": "signin"}), name='signin'), # signin
-   path('signup/', AuthViewSet.as_view({"post": "signup"}), name='signup'), # signup
+   path('signin/', AuthViewSets.as_view({"post": "signin"}), name='signin'), # signin
+   path('signup/', AuthViewSets.as_view({"post": "signup"}), name='signup'),
    # path('create_role/', Create_Role.as_view(), name='create_role'), # create role
    # path('update_role/<str:id>/', Update_Role.as_view(), name='update_role'), # update role
    # path('create_sector/', Create_Sector.as_view(), name='create_sector'), # create sector
