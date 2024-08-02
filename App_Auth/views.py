@@ -54,7 +54,7 @@ def is_valid_email(email):
 
 class AuthViewSet(viewsets.ModelViewSet):
     serializer_class = AuthTokenSerializer
-    queryset = User.objects.all()
+    # queryset = User.objects.all()
 
     @handle_exeptions
     def signin(self, request):
@@ -67,7 +67,7 @@ class AuthViewSet(viewsets.ModelViewSet):
             return Response({"status": "failed", "message": "Account is not verified"}, status=status.HTTP_403_FORBIDDEN)
         
         else:
-            serializer = self.serializer_class(data=request.data)
+            serializer = AuthTokenSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             user = serializer.validated_data["user"]
             user.last_login = timezone.now()
@@ -92,25 +92,24 @@ class AuthViewSet(viewsets.ModelViewSet):
             if user.profile_image:
                 response_data['profile_image_url'] = request.build_absolute_uri(user.profile_image.url)
             return Response(response_data, status=status.HTTP_200_OK)
-        
     
-class Signup(generics.GenericAPIView):
-    serializer_class = SignupSerializer
-    
-    def post(self, request, *args, **kwargs):
+
+    @handle_exeptions
+    def signup(self, request, *args, **kwargs):
         email = request.data['email']
+        phone = request.data['phone']
         auth_code = request.data['auth_code']
         
         if not AuthCode.objects.filter(auth_code=auth_code):
-            return Response({"error":"Invalid auth_code"}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"status": "failed", "message": "Invalid auth_code"}, status=status.HTTP_401_UNAUTHORIZED)
         elif not is_valid_email(email):
-            return Response({"error":"Invalid email"}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"status": "failed", "message": "Invalid email"}, status=status.HTTP_401_UNAUTHORIZED)
         elif User.objects.filter(email=email):
-            return Response({'error':'Email exist'}, status=status.HTTP_401_UNAUTHORIZED)
-        elif User.objects.filter(email=email):
-            return Response({'error':'Email exist'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"status": "failed", "message": "Email exist"}, status=status.HTTP_401_UNAUTHORIZED)
+        elif User.objects.filter(phone=phone):
+            return Response({"status": "failed", "message": "Phone number exist"}, status=status.HTTP_401_UNAUTHORIZED)
         else:            
-            serializer = self.serializer_class(data=request.data)
+            serializer = SignupSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             the_user = serializer.save()
             _, token = AuthToken.objects.create(the_user)
@@ -120,15 +119,20 @@ class Signup(generics.GenericAPIView):
                     'ID': the_user.id,
                     'First Name': the_user.first_name,
                     'Last Name': the_user.last_name,
-                    'Phone Number': the_user.phone_number,
+                    'Phone Number': the_user.phone,
                     'Email': the_user.email,
                     "Gender": the_user.gender,
                     'Role': the_user.role,
                     'Sector': the_user.sector,
                     
                 },
-            'token': token
+            # 'token': token
             }, status=status.HTTP_201_CREATED)
+    
+class Signup(viewsets.ModelViewSet):
+    serializer_class = SignupSerializer
+    
+    
 
 # class Create_Sector(generics.GenericAPIView):
 #     serializer_class = SectorSerializer
