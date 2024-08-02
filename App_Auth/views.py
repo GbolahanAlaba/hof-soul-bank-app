@@ -96,7 +96,7 @@ class AuthViewSets(viewsets.ModelViewSet):
             return Response(response_data, status=status.HTTP_200_OK)
     
 
-    # @handle_exeptions
+    @handle_exeptions
     @action(detail=False, methods=['post'])
     def signup(self, request, *args, **kwargs):
         email = request.data['email']
