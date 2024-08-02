@@ -57,8 +57,9 @@ class AuthViewSets(viewsets.ModelViewSet):
     serializer_class = AuthTokenSerializer
     queryset = User.objects.all()
 
+    @action(detail=False, methods=['post'], authentication_classes=[TokenAuthentication], permission_classes=[IsAuthenticated])
     @handle_exeptions
-    @action(detail=False, methods=['post'])
+    # @action(detail=False, methods=['post'])
     def signin(self, request):
         email_or_phone = request.data['email_or_phone']
         checkUser = User.objects.filter(Q(email=email_or_phone) | Q(phone=email_or_phone)).first()
