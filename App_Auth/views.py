@@ -10,56 +10,18 @@ from rest_framework.views import APIView
 from knox.auth import AuthToken
 from rest_framework.permissions import IsAuthenticated
 from . serializers import *
-import re
+from . utils import *
 from django.db.models import Q
 from functools import wraps
 from rest_framework.decorators import action
 
 
-def handle_exeptions(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except Exception as e:
-            error_message = str(e)
-            return Response({"status": "failed", "message": error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    return wrapper
-
-
-def is_valid_email(email):
-      # Define the regex pattern for email validation
-      pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-      return re.match(pattern, email)
-
-# Create your views here.
-# class CreateAuthCode(generics.GenericAPIView):
-#     serializer_class = AuthCodeSerializer
-#     authentication_classes = [TokenAuthentication]
-#     permission_classes = [IsAuthenticated]
-
-#     def post(self, request):
-#         auth_user = User.objects.get(id=self.request.user.id)
-
-#         if auth_user.role != 'Admin' and auth_user.role != 'Sector Leader':
-#             return Response({"error": "You don't have access to generate authentication code"}, status=status.HTTP_401_UNAUTHORIZED)
-#         else:
-#             auth = {'hof': 'HOF'}
-#             auth_key = "{}{}".format(auth ['hof'], randint(100000, 999999))
-#             serializer = self.serializer_class(data=request.data)
-#             serializer.is_valid(raise_exception=True)
-#             saveauth = serializer.save()
-#             saveauth.auth_code = auth_key
-#             saveauth.save()
-#             return Response({'This is your code %s'%(auth_key)}, status=status.HTTP_201_CREATED)
 
 class AuthViewSets(viewsets.ModelViewSet):
     serializer_class = AuthTokenSerializer
-    queryset = User.objects.all()
 
-    @action(detail=False, methods=['post'], authentication_classes=[TokenAuthentication], permission_classes=[IsAuthenticated])
     @handle_exeptions
-    # @action(detail=False, methods=['post'])
+    @action(detail=False, methods=['post'])
     def signin(self, request):
         email_or_phone = request.data['email_or_phone']
         checkUser = User.objects.filter(Q(email=email_or_phone) | Q(phone=email_or_phone)).first()
@@ -135,6 +97,27 @@ class AuthViewSets(viewsets.ModelViewSet):
             }, status=status.HTTP_201_CREATED)
     
     
+# Create your views here.
+# @action(detail=False, methods=['post'], authentication_classes=[TokenAuthentication], permission_classes=[IsAuthenticated])
+# class CreateAuthCode(generics.GenericAPIView):
+#     serializer_class = AuthCodeSerializer
+#     authentication_classes = [TokenAuthentication]
+#     permission_classes = [IsAuthenticated]
+
+#     def post(self, request):
+#         auth_user = User.objects.get(id=self.request.user.id)
+
+#         if auth_user.role != 'Admin' and auth_user.role != 'Sector Leader':
+#             return Response({"error": "You don't have access to generate authentication code"}, status=status.HTTP_401_UNAUTHORIZED)
+#         else:
+#             auth = {'hof': 'HOF'}
+#             auth_key = "{}{}".format(auth ['hof'], randint(100000, 999999))
+#             serializer = self.serializer_class(data=request.data)
+#             serializer.is_valid(raise_exception=True)
+#             saveauth = serializer.save()
+#             saveauth.auth_code = auth_key
+#             saveauth.save()
+#             return Response({'This is your code %s'%(auth_key)}, status=status.HTTP_201_CREATED)
 
 # class Create_Sector(generics.GenericAPIView):
 #     serializer_class = SectorSerializer

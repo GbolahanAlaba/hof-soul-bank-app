@@ -46,7 +46,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
 
 class User(AbstractBaseUser):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(max_length=50, blank=True, null=True, default='')
     last_name = models.CharField(max_length=50, blank=True, null=True, default='')
     email = LowercaseEmailField(max_length=50, unique=True)
@@ -83,7 +83,7 @@ class User(AbstractBaseUser):
         return True
 
 class Sectors(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    sector_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, default='')
     sector_name = models.CharField(max_length=50, blank=True, null=True, default='')
     timestamp = models.DateTimeField(auto_now_add = True)
@@ -101,7 +101,7 @@ class AuthCode(models.Model):
         return self.auth_code
 
 class Roles(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    role_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, default='')
     role_name = models.CharField(max_length=50, blank=True, null=True, default='')
     timestamp = models.DateTimeField(auto_now_add = True)
