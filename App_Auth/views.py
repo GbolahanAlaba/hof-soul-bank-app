@@ -17,7 +17,7 @@ from rest_framework.decorators import action
 
 
 
-class AuthViewSets(viewsets.ModelViewSet):
+class AuthViewSets(viewsets.ViewSet):
     serializer_class = AuthTokenSerializer
 
     @handle_exeptions

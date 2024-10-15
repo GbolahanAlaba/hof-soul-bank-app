@@ -82,29 +82,49 @@ class User(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return True
 
-class Sectors(models.Model):
-    sector_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, default='')
-    sector_name = models.CharField(max_length=50, blank=True, null=True, default='')
-    timestamp = models.DateTimeField(auto_now_add = True)
+
+class Team(models.Model):
+    team_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50, blank=True, null=True, default='')
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, default='Deleted User', related_name="teams")
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.sector_name
+        return self.name
+    
+class Sector(models.Model):
+    sector_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50, blank=True, null=True, default='')
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, default='Deleted User', related_name="sectors")
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.name
+    
+class Role(models.Model):
+    role_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50, blank=True, null=True, default='')
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, default='Deleted User', related_name="roles")
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.name
 
 class AuthCode(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     sector = models.CharField(max_length=50, blank=True, null=True, default='')
     role = models.CharField(max_length=50, blank=True, null=True, default='')
     auth_code = models.CharField(max_length=50, blank=True, null=True, default='')
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.auth_code
 
-class Roles(models.Model):
-    role_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, default='')
-    role_name = models.CharField(max_length=50, blank=True, null=True, default='')
-    timestamp = models.DateTimeField(auto_now_add = True)
+
 
 
 
