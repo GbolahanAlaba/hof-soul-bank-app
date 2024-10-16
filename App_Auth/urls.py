@@ -31,10 +31,6 @@ urlpatterns = [
    path('create-sector/', SetupViewSets.as_view({"post": "create_sector"}), name='sector-create'),
    path('signin/', AuthViewSets.as_view({"post": "signin"}), name='signin'),
    path('signup/', AuthViewSets.as_view({"post": "signup"}), name='signup'),
-   # path('create_role/', Create_Role.as_view(), name='create_role'), # create role
-   # path('update_role/<str:id>/', Update_Role.as_view(), name='update_role'), # update role
-   # path('create_sector/', Create_Sector.as_view(), name='create_sector'), # create sector
-   # path('update_sector/<str:id>/', Update_Sector.as_view(), name='update_sector'), # update sector
 
    path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
    path('go/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

@@ -53,15 +53,13 @@ class SetupViewSets(viewsets.ViewSet):
 
         if not user.is_admin:
             return Response({"status": "failed", "message": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
-        elif Team.objects.filter(name=request.data.get("name")):
+        elif Sector.objects.filter(name=request.data.get("name")):
             return Response({"status": "failed", "message": "Sector already exists"}, status=status.HTTP_409_CONFLICT)
         else:
             serializer = SectorSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save(created_by=user)
             return Response({"status": "success", "message": f"Team created successfully'", "data": serializer.data}, status=status.HTTP_201_CREATED)
-        
-
 
 class AuthViewSets(viewsets.ViewSet):
     serializer_class = AuthTokenSerializer         
@@ -141,7 +139,8 @@ class AuthViewSets(viewsets.ViewSet):
                 },
             # 'token': token
             }, status=status.HTTP_201_CREATED)
-    
+
+
     
 # Create your views here.
 # @action(detail=False, methods=['post'], authentication_classes=[TokenAuthentication], permission_classes=[IsAuthenticated])
