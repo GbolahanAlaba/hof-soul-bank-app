@@ -46,8 +46,3 @@ def is_valid_phone(phone):
 
     # If valid, simply pass
     return True
-
-
-def is_valid_phone_w(phone):
-    WORLDWIDE_PHONE_REGEX = re.compile(r'^\+(?:[0-9] ?){6,14}[0-9]$')
-    return re.match(WORLDWIDE_PHONE_REGEX, phone)
