@@ -115,8 +115,6 @@ class Role(models.Model):
 
 class AuthCode(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    sector = models.CharField(max_length=50, blank=True, null=True, default='')
-    role = models.CharField(max_length=50, blank=True, null=True, default='')
     auth_code = models.CharField(max_length=50, blank=True, null=True, default='')
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)

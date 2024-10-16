@@ -17,8 +17,25 @@ from rest_framework.decorators import action
 
 
 
+class SetupViewSets(viewsets.ViewSet):
+    authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
+
+    def create_auth_code(self, request):
+        user = request.user
+
+        if user.role != "Sector Leader":
+            return Response({"status": "failed", "message": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+        else:
+            auth = {'hof': 'HOF'}
+            auth_code = "{}{}".format(auth ['hof'], randint(100000, 999999))
+            AuthCode.objects.create(auth_code=auth_code)
+            return Response({"status": "success", "message": f"Authorization code created '{auth_code}'", "data": auth_code}, status=status.HTTP_201_CREATED)
+        
+        
+
 class AuthViewSets(viewsets.ViewSet):
-    serializer_class = AuthTokenSerializer
+    serializer_class = AuthTokenSerializer         
 
     @handle_exeptions
     @action(detail=False, methods=['post'])
@@ -41,9 +58,9 @@ class AuthViewSets(viewsets.ViewSet):
 
             response_data = {
                 "status": "success",
-                "message": "signin successfully",
+                "message": "Signed successfully",
                 "data":{
-                    "id": user.id,
+                    "user_id": user.user_id,
                     "first_name": user.first_name,
                     "last_name": user.last_name,
                     "email": user.email,
