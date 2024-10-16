@@ -20,7 +20,7 @@ class SetupViewSets(viewsets.ViewSet):
     authentication_classes=[TokenAuthentication]
     permission_classes=[IsAuthenticated]
 
-    @handle_exeptions
+    @handle_exceptions
     def create_auth_code(self, request):
         user = request.user
 
@@ -33,7 +33,7 @@ class SetupViewSets(viewsets.ViewSet):
             return Response({"status": "success", "message": f"Authorization code created '{auth_code}'", "data": auth_code}, status=status.HTTP_201_CREATED)
     
 
-    @handle_exeptions
+    @handle_exceptions
     def create_team(self, request):
         user = request.user
 
@@ -47,7 +47,7 @@ class SetupViewSets(viewsets.ViewSet):
             serializer.save(created_by=user)
             return Response({"status": "success", "message": f"Team created successfully'", "data": serializer.data}, status=status.HTTP_201_CREATED)
         
-    @handle_exeptions
+    @handle_exceptions
     def create_sector(self, request):
         user = request.user
 
@@ -64,7 +64,7 @@ class SetupViewSets(viewsets.ViewSet):
 class AuthViewSets(viewsets.ViewSet):
     serializer_class = AuthTokenSerializer         
 
-    @handle_exeptions
+    @handle_exceptions
     @action(detail=False, methods=['post'])
     def signin(self, request):
         email_or_phone = request.data['email_or_phone']
@@ -103,14 +103,13 @@ class AuthViewSets(viewsets.ViewSet):
             return Response(response_data, status=status.HTTP_200_OK)
     
 
-    @handle_exeptions
+    @handle_exceptions
     @action(detail=False, methods=['post'])
     def signup(self, request, *args, **kwargs):
-        # phone = request.data['phone']
         # auth_code = request.data['auth_code']
         
-            
-        is_valid_phone(request.data.get('phone'))   
+        is_valid_phone(request.data.get('phone'))
+        validate_auth_code(request.data.get('auth_code'))  
         serializer = SignupSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()

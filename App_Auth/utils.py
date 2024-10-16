@@ -5,10 +5,10 @@ from rest_framework.decorators import action
 import re
 from . models import *
 from rest_framework.exceptions import ValidationError
+from rest_framework.exceptions import PermissionDenied
 
 
-
-def handle_exeptions(func):
+def handle_exceptions(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         try:
@@ -19,7 +19,7 @@ def handle_exeptions(func):
     return wrapper
 
 
-@handle_exeptions
+@handle_exceptions
 def validate_email(email):
       # Define the regex pattern for email validation
       try:
@@ -29,7 +29,7 @@ def validate_email(email):
         return Response({"status": "failed", "message": "Invalid email"})
           
 
-@handle_exeptions
+@handle_exceptions
 def is_phone_exist(phone):
     try:
         phone = User.objects.filter(phone=phone).exists()
@@ -43,6 +43,13 @@ def is_valid_phone(phone):
     WORLDWIDE_PHONE_REGEX = re.compile(r'^\+(?:[0-9] ?){6,14}[0-9]$')
     if not WORLDWIDE_PHONE_REGEX.match(phone):
         raise ValidationError({"status": "failed", "message": "Invalid phone number"})
-
-    # If valid, simply pass
     return True
+
+
+@handle_exceptions
+def validate_auth_code(auth_code):
+    try:
+        auth_code = AuthCode.objects.get(auth_code=auth_code)
+        return auth_code
+    except AuthCode.DoesNotExist:
+        raise PermissionDenied({"status": "failed", "message": "Subcategory does not exist."})
