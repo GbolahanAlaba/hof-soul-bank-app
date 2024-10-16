@@ -66,6 +66,43 @@ Base URL - `http://127.0.0.1:8000`
 
 ## **API Implementation**
 
+#### POST /auth/signin/
+
+- **Request Body**:
+
+  ```json
+  {
+    "email_or_phone": "admin@gmail.com" or "09073832843",
+    "password": "pass"
+  }
+
+- **Response**:
+
+  ```json
+  {
+    "status": "success",
+    "message": "Signed successfully",
+    "data": {
+        "user_id": "1fd51c63-d29c-4450-b978-d32ca913ec53",
+        "first_name": "HOF",
+        "last_name": "Admin",
+        "email": "admin@gmail.com",
+        "phone": "090",
+        "team": "Admin",
+        "role": "Sector Leader",
+        "sector": "Headquaters"
+    },
+    "token": "ef739f7d96ce5381f3785fd3680171eaa03ee604078763e91ac47770a315a98f"
+  }
+
+`200 OK` on success.
+
+`404 Not Found` on not found error.
+
+`403 Forbidden` on unverified account error.
+
+`509 Internal Server Error` on server error.
+
 
 ## **Testing**
 Run a tests to ensure the API endpoints work as expected.

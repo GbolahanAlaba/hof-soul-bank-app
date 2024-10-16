@@ -101,72 +101,16 @@ class TeamSerializer(serializers.ModelSerializer):
         model = Team
         fields = ['name', 'created_by', 'created_at', 'updated_at']
 
-    
     def get_created_by(self, obj):
         return f"{obj.created_by.first_name} {obj.created_by.last_name}"
     
-
 class SectorSerializer(serializers.ModelSerializer):
     created_by = serializers.SerializerMethodField()
   
     class Meta:
         model = Sector
         fields = ['name', 'created_by', 'created_at', 'updated_at']
-
     
     def get_created_by(self, obj):
         return f"{obj.created_by.first_name} {obj.created_by.last_name}"
 
-# class ResendOTPSerializer(serializers.Serializer):
-#     email = serializers.CharField(min_length=2)
-    
-#     class Meta:
-#         fields = ['email']
-
-# class ForgotPasswordSerializer(serializers.Serializer):
-#     email = serializers.CharField(min_length=2)
-
-#     class Meta:
-#         fields = ['email']
-
-# class SetPasswordSerializer(serializers.Serializer):
-#     password = serializers.CharField(min_length=2)
-    
-#     class Meta:
-#         fields = ['password']
-# class AuthCodeSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = AuthCode
-#         fields = ('sector', 'role')
-    
-#     def create(self, validated_data):
-#         sector = validated_data.get('sector')
-#         role = validated_data.get('role')
-
-#         get_auth = AuthCode.objects.create(sector=sector, role=role)
-#         return get_auth
-
-# class SignupSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ('first_name', 'last_name', 'email', 'phone_number', 'gender', 'team', 'auth_code', 'password')
-    
-#     def create(self, validated_data):
-#         first_name = validated_data.get('first_name')
-#         last_name = validated_data.get('last_name')
-#         email = validated_data.get('email')
-#         phone_number = validated_data.get('phone_number')
-#         gender = validated_data.get('gender')
-#         team = validated_data.get('team')
-#         auth_code = validated_data.get('auth_code')
-#         password = validated_data.get('password')
-
-#         get_sector = AuthCode.objects.get(auth_code=auth_code).sector
-#         get_role = AuthCode.objects.get(auth_code=auth_code).role
-        
-#         user = get_user_model().objects.create(first_name=first_name, last_name=last_name, email=email, phone_number=phone_number, username=email, 
-#                                                gender=gender, team=team, sector=get_sector, role=get_role, auth_code=auth_code)
-#         user.set_password(password)
-#         user.save()
-
-#         return user
