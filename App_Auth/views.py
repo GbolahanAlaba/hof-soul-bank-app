@@ -106,42 +106,47 @@ class AuthViewSets(viewsets.ViewSet):
     @handle_exeptions
     @action(detail=False, methods=['post'])
     def signup(self, request, *args, **kwargs):
-        email = request.data['email']
-        phone = request.data['phone']
-        auth_code = request.data['auth_code']
+        # phone = request.data['phone']
+        # auth_code = request.data['auth_code']
         
-        if not AuthCode.objects.filter(auth_code=auth_code):
-            return Response({"status": "failed", "message": "Invalid auth_code"}, status=status.HTTP_401_UNAUTHORIZED)
-        elif not is_valid_email(email):
-            return Response({"status": "failed", "message": "Invalid email"}, status=status.HTTP_401_UNAUTHORIZED)
-        elif User.objects.filter(email=email):
-            return Response({"status": "failed", "message": "Email exist"}, status=status.HTTP_401_UNAUTHORIZED)
-        elif User.objects.filter(phone=phone):
-            return Response({"status": "failed", "message": "Phone number exist"}, status=status.HTTP_401_UNAUTHORIZED)
-        else:            
-            serializer = SignupSerializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            the_user = serializer.save()
-            _, token = AuthToken.objects.create(the_user)
-        
-            return Response({
-                "status": "success",
-                "message": "Signup successful",
-                "data": {
-                    'id': the_user.id,
-                    'first_name': the_user.first_name,
-                    'last_name': the_user.last_name,
-                    'phone': the_user.phone,
-                    'email': the_user.email,
-                    "gender": the_user.gender,
-                    'role': the_user.role,
-                    'rector': the_user.sector,
-                },
-            # 'token': token
-            }, status=status.HTTP_201_CREATED)
-
-
+            
+        is_valid_phone(request.data.get('phone'))   
+        serializer = SignupSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        _, token = AuthToken.objects.create(user)
     
+        return Response({
+            "status": "success",
+            "message": "Signup successful",
+            "data": {
+                'user_id': user.user_id,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'phone': user.phone,
+                'email': user.email,
+                "gender": user.gender,
+                'sector': user.sector,
+            },
+        # 'token': token
+        }, status=status.HTTP_201_CREATED)
+
+
+
+
+ # if not AuthCode.objects.filter(auth_code=auth_code):
+        #     return Response({"status": "failed", "message": "Invalid auth_code"}, status=status.HTTP_401_UNAUTHORIZED)
+        # elif not is_valid_email(email):
+        #     return Response({"status": "failed", "message": "Invalid email"}, status=status.HTTP_401_UNAUTHORIZED)
+        # elif User.objects.filter(email=email):
+        #     return Response({"status": "failed", "message": "Email exist"}, status=status.HTTP_401_UNAUTHORIZED)
+        # elif User.objects.filter(phone=phone):
+        #     return Response({"status": "failed", "message": "Phone number exist"}, status=status.HTTP_401_UNAUTHORIZED)
+        # else:   
+
+
+
+
 # Create your views here.
 # @action(detail=False, methods=['post'], authentication_classes=[TokenAuthentication], permission_classes=[IsAuthenticated])
 # class CreateAuthCode(generics.GenericAPIView):

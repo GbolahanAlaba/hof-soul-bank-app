@@ -70,7 +70,7 @@ class SignupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email', 'phone', 'gender', 'team', 'auth_code', 'password')
+        fields = ('first_name', 'last_name', 'email', 'phone', 'gender', 'team', 'sector', 'auth_code', 'password')
         extra_kwargs = {'password': {'write_only': True}}  # Ensure password is write-only
     
     def create(self, validated_data):
