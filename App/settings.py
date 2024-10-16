@@ -37,9 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'App_Users',
-    'App_Souls',
+    'App_Auth',
     'rest_framework',
     'knox',
     'drf_yasg',
@@ -121,11 +119,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+ 
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 MEDIA_URL = '/media/'
-MEDIAFILES = [ os.path.join(BASE_DIR / "media"),]
-MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+MEDIA_ROOT = os.path.join('/var/data', 'mediafiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -141,7 +143,7 @@ REST_FRAMEWORK = {
 }
 
 
-AUTH_USER_MODEL = 'App_Users.User' # User authentication
+AUTH_USER_MODEL = 'App_Auth.User' # User authentication
 
 REST_FRAMEWORK = { 'DEFAULT_AUTHENTICATION_CLASSES': [ 
                     # 'rest_framework.authentication.SessionAuthentication',
@@ -154,6 +156,6 @@ REST_KNOX = {
 
 
 AUTHENTICATION_BACKENDS = [
-    'App_Users.backends.PhoneNumberBackend',
+    'App_Auth.backends.PhoneNumberBackend',
     'django.contrib.auth.backends.ModelBackend' # Default Django backend
 ]
