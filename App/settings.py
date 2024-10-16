@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-v^4v9k6kmh1r9cvyxk$+oolrvc%n(*rcwfm%pe7(@50e@&u6$d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'soulbank.azurewebsites.net']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition

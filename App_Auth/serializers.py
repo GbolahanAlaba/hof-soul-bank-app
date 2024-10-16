@@ -104,7 +104,6 @@ class TeamSerializer(serializers.ModelSerializer):
     def get_created_by(self, obj):
         return f"{obj.created_by.first_name} {obj.created_by.last_name}"
     
-
 class SectorSerializer(serializers.ModelSerializer):
     created_by = serializers.SerializerMethodField()
   
