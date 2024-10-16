@@ -72,7 +72,7 @@ Base URL - `http://127.0.0.1:8000`
 
   ```json
   {
-    "email_or_phone": "admin@gmail.com" or "09073832843",
+    "email_or_phone": "admin@gmail.com or 09073832843",
     "password": "pass"
   }
 
