@@ -94,10 +94,28 @@ class SignupSerializer(serializers.ModelSerializer):
             return self.context['request'].build_absolute_uri(obj.profile_image.url)
         return None
 
-# class OTPSerializer(serializers.Serializer):
-#     otp = serializers.CharField(min_length=2)
-#     class Meta:
-#         fields = ['otp']
+class TeamSerializer(serializers.ModelSerializer):
+    created_by = serializers.SerializerMethodField()
+  
+    class Meta:
+        model = Team
+        fields = ['name', 'created_by', 'created_at', 'updated_at']
+
+    
+    def get_created_by(self, obj):
+        return f"{obj.created_by.first_name} {obj.created_by.last_name}"
+    
+
+class SectorSerializer(serializers.ModelSerializer):
+    created_by = serializers.SerializerMethodField()
+  
+    class Meta:
+        model = Sector
+        fields = ['name', 'created_by', 'created_at', 'updated_at']
+
+    
+    def get_created_by(self, obj):
+        return f"{obj.created_by.first_name} {obj.created_by.last_name}"
 
 # class ResendOTPSerializer(serializers.Serializer):
 #     email = serializers.CharField(min_length=2)

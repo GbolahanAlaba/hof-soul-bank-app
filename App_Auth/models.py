@@ -86,7 +86,7 @@ class User(AbstractBaseUser):
 class Team(models.Model):
     team_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50, blank=True, null=True, default='')
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, default='Deleted User', related_name="teams")
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name="teams")
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
 
@@ -96,7 +96,7 @@ class Team(models.Model):
 class Sector(models.Model):
     sector_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50, blank=True, null=True, default='')
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, default='Deleted User', related_name="sectors")
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name="sectors")
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
 
@@ -106,7 +106,7 @@ class Sector(models.Model):
 class Role(models.Model):
     role_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50, blank=True, null=True, default='')
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, default='Deleted User', related_name="roles")
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name="roles")
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(default=timezone.now)
 
