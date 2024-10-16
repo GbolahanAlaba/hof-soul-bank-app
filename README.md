@@ -1,9 +1,9 @@
 
-# **E-commerce App**
+# **Soul Bank App**
 
 ## **Overview**
 
-This eCommerce project provides a seamless shopping experience with a set of essential features, including user authentication, product browsing, cart management, and payment integration. Here's a detailed description of the project:
+Soul Bank App is a web application designed to help evangelists and churches efficiently record and track souls saved during evangelism outreaches. The app provides an organized system for documenting new believers, capturing important details about each soul saved, and offering insightful reports to monitor progress over time.
 
 ## **Prerequisites**
 
@@ -17,9 +17,9 @@ This eCommerce project provides a seamless shopping experience with a set of ess
 Clone the Repository
 
 
-git clone https://github.com/GbolahanAlaba/ecommerce-app
+git clone https://github.com/GbolahanAlaba/soul-bank-app
 
-cd ecommerce-app
+cd soul-bank-app
 
 
 ## **Create Virtual Environment**
@@ -58,56 +58,13 @@ Start the development server to verify everything is set up correctly:
 You should now be able to access the application at http://127.0.0.1:8000/api
 
 ## **API Endpoints**
-Base URL - `http://127.0.0.1:8000/`
+Base URL - `http://127.0.0.1:8000`
 
 - `POST /auth/signin/`: Signin as a user or admin.
 - `POST /auth/signup/`: Signup an account.
 
 
 ## **API Implementation**
-
-
-#### POST /create-applicant/
-
-- **Request Body**:
-
-  ```json
-  {
-    "email_or_phone": "admin@gmail.com" or "09073832843",
-    "password": "pass"
-  }
-
-- **Response**:
-
-  ```json
-  {
-    "status": "success",
-    "message": "signin successfully",
-    "data": {
-        "user_id": "7ee38ad4-f0eb-42b1-87c4-175ce6ae467b",
-        "first_name": "",
-        "last_name": "",
-        "email": "admin@gmail.com",
-        "phone": "08011112222",
-        "address": "Your address",
-        "state": "Your state",
-        "lga": "Your LGA",
-        "residential": "",
-        "gender": true,
-        "referral_code": "",
-        "is_staff": true
-    },
-    "token": "96cdda6bfec57d759752590ca3aef9359fa6684f79d409ad1822df69e18bc90e"
-  }
-
-`200 OK` on success.
-
-`404 Not Found` on not found error.
-
-`403 Forbidden` on forbidden error.
-
-`509 Internal Server Error` on server error.
-
 
 
 ## **Testing**
