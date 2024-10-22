@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from datetime import timedelta
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -40,7 +42,7 @@ INSTALLED_APPS = [
     'App_Auth',
     'rest_framework',
     'knox',
-    'drf_yasg',
+    # 'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -159,3 +161,17 @@ AUTHENTICATION_BACKENDS = [
     'App_Auth.backends.PhoneNumberBackend',
     'django.contrib.auth.backends.ModelBackend' # Default Django backend
 ]
+
+
+time = 60 * 60
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=time),  # Set token expiry time (customize as needed)
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,  # Make sure you use the same signing key as in your project
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'user_id',  # Use 'user_id' as the user identifier
+    'USER_ID_CLAIM': 'user_id',  # Ensure the token carries this claim
+}

@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import viewsets, permissions
 from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken 
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.auth import TokenAuthentication
 from rest_framework.views import APIView
@@ -80,9 +81,9 @@ class AuthViewSets(viewsets.ViewSet):
             serializer.is_valid(raise_exception=True)
             user = serializer.validated_data["user"]
             user.last_login = timezone.now()
-            user.save(update_fields=["last_login"])
-            _, token = AuthToken.objects.create(user)   
+            user.save(update_fields=["last_login"])  
 
+            refresh = RefreshToken.for_user(user)  # This will create the JWT refresh and access tokens
             response_data = {
                 "status": "success",
                 "message": "Signed successfully",
@@ -96,7 +97,10 @@ class AuthViewSets(viewsets.ViewSet):
                     'role': user.role,
                     'sector': user.sector,
                 },
-            "token": token
+            "tokens": {
+                    "access": str(refresh.access_token),  # Return the access token
+                    "refresh": str(refresh),  # Return the refresh token
+                }
             }
             if user.profile_image:
                 response_data['profile_image_url'] = request.build_absolute_uri(user.profile_image.url)
