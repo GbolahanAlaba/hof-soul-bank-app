@@ -43,7 +43,7 @@ class SetupViewSets(viewsets.ViewSet):
         role  = user.user_role.first()
 
         if role.admin != True:
-            return Response({"status": "failed", "message": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"status": "failed", "message": "Unauthorized to create team"}, status=status.HTTP_403_FORBIDDEN)
         elif Team.objects.filter(name=request.data.get("name")):
             return Response({"status": "failed", "message": "Team already exists"}, status=status.HTTP_409_CONFLICT)
         else:
@@ -58,7 +58,7 @@ class SetupViewSets(viewsets.ViewSet):
         role  = user.user_role.first()
 
         if role.admin != True:
-            return Response({"status": "failed", "message": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"status": "failed", "message": "Unauthorized to create sector"}, status=status.HTTP_403_FORBIDDEN)
         elif Sector.objects.filter(name=request.data.get("name")):
             return Response({"status": "failed", "message": "Sector already exists"}, status=status.HTTP_409_CONFLICT)
         else:
