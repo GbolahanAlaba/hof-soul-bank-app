@@ -58,7 +58,7 @@ Start the development server to verify everything is set up correctly:
 You should now be able to access the application at http://127.0.0.1:8000/api
 
 ## **API Endpoints**
-Base URL - `http://127.0.0.1:8000`
+Local/Hosted Base URL - `http://127.0.0.1:8000 / https://soulbankapp.onrender.com`
 
 - `POST /auth/signin/`: Signin as a user or admin.
 - `POST /auth/signup/`: Signup an account.

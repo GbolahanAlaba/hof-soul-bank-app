@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import viewsets, permissions
 from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken 
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.auth import TokenAuthentication
 from rest_framework.views import APIView
@@ -20,7 +21,7 @@ class SetupViewSets(viewsets.ViewSet):
     authentication_classes=[TokenAuthentication]
     permission_classes=[IsAuthenticated]
 
-    @handle_exeptions
+    @handle_exceptions
     def create_auth_code(self, request):
         user = request.user
 
@@ -33,7 +34,7 @@ class SetupViewSets(viewsets.ViewSet):
             return Response({"status": "success", "message": f"Authorization code created '{auth_code}'", "data": auth_code}, status=status.HTTP_201_CREATED)
     
 
-    @handle_exeptions
+    @handle_exceptions
     def create_team(self, request):
         user = request.user
 
@@ -47,7 +48,7 @@ class SetupViewSets(viewsets.ViewSet):
             serializer.save(created_by=user)
             return Response({"status": "success", "message": f"Team created successfully'", "data": serializer.data}, status=status.HTTP_201_CREATED)
         
-    @handle_exeptions
+    @handle_exceptions
     def create_sector(self, request):
         user = request.user
 
@@ -64,7 +65,7 @@ class SetupViewSets(viewsets.ViewSet):
 class AuthViewSets(viewsets.ViewSet):
     serializer_class = AuthTokenSerializer         
 
-    @handle_exeptions
+    @handle_exceptions
     @action(detail=False, methods=['post'])
     def signin(self, request):
         email_or_phone = request.data['email_or_phone']
@@ -80,9 +81,9 @@ class AuthViewSets(viewsets.ViewSet):
             serializer.is_valid(raise_exception=True)
             user = serializer.validated_data["user"]
             user.last_login = timezone.now()
-            user.save(update_fields=["last_login"])
-            _, token = AuthToken.objects.create(user)   
+            user.save(update_fields=["last_login"])  
 
+            refresh = RefreshToken.for_user(user)  # This will create the JWT refresh and access tokens
             response_data = {
                 "status": "success",
                 "message": "Signed successfully",
@@ -96,21 +97,25 @@ class AuthViewSets(viewsets.ViewSet):
                     'role': user.role,
                     'sector': user.sector,
                 },
-            "token": token
+            "tokens": {
+                    "access": str(refresh.access_token),  # Return the access token
+                    "refresh": str(refresh),  # Return the refresh token
+                }
             }
             if user.profile_image:
                 response_data['profile_image_url'] = request.build_absolute_uri(user.profile_image.url)
             return Response(response_data, status=status.HTTP_200_OK)
     
 
-    @handle_exeptions
+    @handle_exceptions
     @action(detail=False, methods=['post'])
+
+
     def signup(self, request, *args, **kwargs):
-        # phone = request.data['phone']
         # auth_code = request.data['auth_code']
         
-            
-        is_valid_phone(request.data.get('phone'))   
+        is_valid_phone(request.data.get('phone'))
+        validate_auth_code(request.data.get('auth_code'))  
         serializer = SignupSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
@@ -133,6 +138,7 @@ class AuthViewSets(viewsets.ViewSet):
 
 
 
+# jjdjjf
 
  # if not AuthCode.objects.filter(auth_code=auth_code):
         #     return Response({"status": "failed", "message": "Invalid auth_code"}, status=status.HTTP_401_UNAUTHORIZED)
