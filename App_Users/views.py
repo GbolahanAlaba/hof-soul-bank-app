@@ -10,6 +10,7 @@ from knox.auth import TokenAuthentication
 from rest_framework.views import APIView
 from knox.auth import AuthToken
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication 
 from . serializers import *
 from . utils import *
 from django.db.models import Q
@@ -17,8 +18,9 @@ from rest_framework.decorators import action
 
 
 
+
 class SetupViewSets(viewsets.ViewSet):
-    authentication_classes=[TokenAuthentication]
+    authentication_classes=[JWTAuthentication]
     permission_classes=[IsAuthenticated]
 
     @handle_exceptions
