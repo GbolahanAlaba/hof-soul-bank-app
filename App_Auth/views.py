@@ -1,4 +1,5 @@
 from . models import *
+from App_Users.models import *
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework import generics
@@ -72,7 +73,7 @@ class AuthViewSets(viewsets.ViewSet):
         serializer = SignupSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        _, token = AuthToken.objects.create(user)
+        Role.objects.create(user=user)
     
         return Response({
             "status": "success",
@@ -86,7 +87,6 @@ class AuthViewSets(viewsets.ViewSet):
                 "gender": user.gender,
                 'sector': user.sector,
             },
-        # 'token': token
         }, status=status.HTTP_201_CREATED)
 
 
