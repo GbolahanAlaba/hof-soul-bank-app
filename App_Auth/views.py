@@ -66,7 +66,7 @@ class AuthViewSets(viewsets.ViewSet):
     @handle_exceptions
     @action(detail=False, methods=['post'])
     def signup(self, request, *args, **kwargs):
-        # auth_code = request.data['auth_code']
+        auth_code = request.data['auth_code']
         
         is_valid_phone(request.data.get('phone'))
         validate_auth_code(request.data.get('auth_code'))  

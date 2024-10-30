@@ -35,7 +35,7 @@ class Role(models.Model):
     updated_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.name
+        return f"{self.user.first_name}"
 
 class AuthCode(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
