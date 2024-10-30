@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'App_Auth',
     'rest_framework',
     'knox',
+    'rest_framework_simplejwt',
     # 'drf_yasg',
 ]
 

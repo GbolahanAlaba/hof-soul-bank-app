@@ -137,9 +137,6 @@ class AuthViewSets(viewsets.ViewSet):
         }, status=status.HTTP_201_CREATED)
 
 
-
-# jjdjjf
-
  # if not AuthCode.objects.filter(auth_code=auth_code):
         #     return Response({"status": "failed", "message": "Invalid auth_code"}, status=status.HTTP_401_UNAUTHORIZED)
         # elif not is_valid_email(email):
