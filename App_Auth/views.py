@@ -109,8 +109,6 @@ class AuthViewSets(viewsets.ViewSet):
 
     @handle_exceptions
     @action(detail=False, methods=['post'])
-
-
     def signup(self, request, *args, **kwargs):
         # auth_code = request.data['auth_code']
         

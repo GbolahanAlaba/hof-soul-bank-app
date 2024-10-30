@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'App_Auth',
+    'App_Users',
     'rest_framework',
     'knox',
     'rest_framework_simplejwt',
