@@ -42,7 +42,7 @@ class SetupViewSets(viewsets.ViewSet):
         user = request.user
         role  = user.user_role.first()
 
-        if not role.admin:
+        if role.admin != True:
             return Response({"status": "failed", "message": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
         elif Team.objects.filter(name=request.data.get("name")):
             return Response({"status": "failed", "message": "Team already exists"}, status=status.HTTP_409_CONFLICT)
@@ -55,8 +55,9 @@ class SetupViewSets(viewsets.ViewSet):
     @handle_exceptions
     def create_sector(self, request):
         user = request.user
+        role  = user.user_role.first()
 
-        if not user.is_admin:
+        if role.admin != True:
             return Response({"status": "failed", "message": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
         elif Sector.objects.filter(name=request.data.get("name")):
             return Response({"status": "failed", "message": "Sector already exists"}, status=status.HTTP_409_CONFLICT)
