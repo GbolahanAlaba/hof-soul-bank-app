@@ -18,7 +18,6 @@ from rest_framework.decorators import action
 
 
 
-
 class SetupViewSets(viewsets.ViewSet):
     authentication_classes=[JWTAuthentication]
     permission_classes=[IsAuthenticated]
@@ -28,7 +27,7 @@ class SetupViewSets(viewsets.ViewSet):
         user = request.user
         role  = user.user_role.first()
 
-        if role.admin != True:
+        if role.admin is False: # and role.sec_lead is False:
             return Response({"status": "failed", "message": "Unauthorized to create auth code"}, status=status.HTTP_403_FORBIDDEN)
         else:
             auth = {'hof': 'HOF'}
@@ -40,9 +39,10 @@ class SetupViewSets(viewsets.ViewSet):
     @handle_exceptions
     def create_team(self, request):
         user = request.user
+        role  = user.user_role.first()
 
-        if not user.is_admin:
-            return Response({"status": "failed", "message": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+        if role.admin != True:
+            return Response({"status": "failed", "message": "Unauthorized to create team"}, status=status.HTTP_403_FORBIDDEN)
         elif Team.objects.filter(name=request.data.get("name")):
             return Response({"status": "failed", "message": "Team already exists"}, status=status.HTTP_409_CONFLICT)
         else:
@@ -54,9 +54,10 @@ class SetupViewSets(viewsets.ViewSet):
     @handle_exceptions
     def create_sector(self, request):
         user = request.user
+        role  = user.user_role.first()
 
-        if not user.is_admin:
-            return Response({"status": "failed", "message": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+        if role.admin != True:
+            return Response({"status": "failed", "message": "Unauthorized to create sector"}, status=status.HTTP_403_FORBIDDEN)
         elif Sector.objects.filter(name=request.data.get("name")):
             return Response({"status": "failed", "message": "Sector already exists"}, status=status.HTTP_409_CONFLICT)
         else:

@@ -21,6 +21,7 @@ class RoleAdmin(admin.ModelAdmin):
     list_display = ['user', 'admin', 'sec_lead', 'member', 'created_at']
     list_filter = ['user']
     search_fields = ['user']
+    list_editable = ['admin', 'sec_lead', 'member']
 
 @admin.register(AuthCode)
 class AuthCodeAdmin(admin.ModelAdmin):
