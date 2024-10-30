@@ -26,9 +26,10 @@ class SetupViewSets(viewsets.ViewSet):
     @handle_exceptions
     def create_auth_code(self, request):
         user = request.user
+        role  = user.user_role.first()
 
-        if user.user_role.admin != True:
-            return Response({"status": "failed", "message": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+        if role.admin != True:
+            return Response({"status": "failed", "message": "Unauthorized to create auth code"}, status=status.HTTP_403_FORBIDDEN)
         else:
             auth = {'hof': 'HOF'}
             auth_code = "{}{}".format(auth ['hof'], randint(100000, 999999))
