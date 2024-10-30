@@ -18,7 +18,6 @@ from rest_framework.decorators import action
 
 
 
-
 class SetupViewSets(viewsets.ViewSet):
     authentication_classes=[JWTAuthentication]
     permission_classes=[IsAuthenticated]
@@ -28,7 +27,7 @@ class SetupViewSets(viewsets.ViewSet):
         user = request.user
         role  = user.user_role.first()
 
-        if role.admin is False and role.sec_lead is False:
+        if role.admin is False: # and role.sec_lead is False:
             return Response({"status": "failed", "message": "Unauthorized to create auth code"}, status=status.HTTP_403_FORBIDDEN)
         else:
             auth = {'hof': 'HOF'}
