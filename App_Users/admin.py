@@ -17,8 +17,8 @@ class SectorAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 @admin.register(Role)
-class AuthCodeAdmin(admin.ModelAdmin):
-    list_display = ['user', 'admin', 'sec_lead', 'member']
+class RoleAdmin(admin.ModelAdmin):
+    list_display = ['user', 'admin', 'sec_lead', 'member', 'created_at']
     list_filter = ['user']
     search_fields = ['user']
 
