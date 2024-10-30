@@ -1,12 +1,5 @@
-from django.urls import path, include
-from . import views
+from django.urls import path
 from . views import *
-from knox import views as knox_views
-
-
-#  SWAGGER
-from django.urls import re_path
-from rest_framework import permissions
 
 
 
