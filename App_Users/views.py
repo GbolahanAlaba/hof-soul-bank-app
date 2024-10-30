@@ -28,7 +28,7 @@ class SetupViewSets(viewsets.ViewSet):
         user = request.user
         role  = user.user_role.first()
 
-        if role.admin != True or role.sec_lead != True:
+        if role.admin or role.sec_lead:
             return Response({"status": "failed", "message": "Unauthorized to create auth code"}, status=status.HTTP_403_FORBIDDEN)
         else:
             auth = {'hof': 'HOF'}
