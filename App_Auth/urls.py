@@ -12,9 +12,6 @@ from rest_framework import permissions
 
 
 urlpatterns = [
-   path('create-auth/', SetupViewSets.as_view({"post": "create_auth_code"}), name='auth-create'),
-   path('create-team/', SetupViewSets.as_view({"post": "create_team"}), name='team-create'),
-   path('create-sector/', SetupViewSets.as_view({"post": "create_sector"}), name='sector-create'),
    path('signin/', AuthViewSets.as_view({"post": "signin"}), name='signin'),
    path('signup/', AuthViewSets.as_view({"post": "signup"}), name='signup'),
 
