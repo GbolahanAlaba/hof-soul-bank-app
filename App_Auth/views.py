@@ -67,9 +67,10 @@ class AuthViewSets(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
     def signup(self, request, *args, **kwargs):
         auth_code = request.data['auth_code']
+        if not AuthCode.objects.filter(auth_code=auth_code).first():
+            return Response({"status": "failed", "message": "Auth code does not exist"}, status=status.HTTP_400_BAD_REQUEST)
         
         is_valid_phone(request.data.get('phone'))
-        validate_auth_code(request.data.get('auth_code'))  
         serializer = SignupSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()

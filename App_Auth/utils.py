@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 import re
 from . models import *
+from App_Users.models import *
 from rest_framework.exceptions import ValidationError
 from rest_framework.exceptions import PermissionDenied
 
@@ -52,4 +53,4 @@ def validate_auth_code(auth_code):
         auth_code = AuthCode.objects.get(auth_code=auth_code)
         return auth_code
     except AuthCode.DoesNotExist:
-        raise PermissionDenied({"status": "failed", "message": "Subcategory does not exist."})
+        raise PermissionDenied({"status": "failed", "message": "Auth code does not exist."})
