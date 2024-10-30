@@ -109,6 +109,8 @@ class AuthViewSets(viewsets.ViewSet):
 
     @handle_exceptions
     @action(detail=False, methods=['post'])
+
+
     def signup(self, request, *args, **kwargs):
         # auth_code = request.data['auth_code']
         
@@ -136,6 +138,7 @@ class AuthViewSets(viewsets.ViewSet):
 
 
 
+# jjdjjf
 
  # if not AuthCode.objects.filter(auth_code=auth_code):
         #     return Response({"status": "failed", "message": "Invalid auth_code"}, status=status.HTTP_401_UNAUTHORIZED)
