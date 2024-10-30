@@ -1,4 +1,5 @@
 from . models import *
+from App_Users.models import *
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework import generics
@@ -65,14 +66,17 @@ class AuthViewSets(viewsets.ViewSet):
     @handle_exceptions
     @action(detail=False, methods=['post'])
     def signup(self, request, *args, **kwargs):
-        # auth_code = request.data['auth_code']
+        auth_code = request.data['auth_code']
+        auth = AuthCode.objects.filter(auth_code=auth_code).first()
+        if not auth:
+            return Response({"status": "failed", "message": "Auth code does not exist"}, status=status.HTTP_400_BAD_REQUEST)
         
         is_valid_phone(request.data.get('phone'))
-        validate_auth_code(request.data.get('auth_code'))  
         serializer = SignupSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        _, token = AuthToken.objects.create(user)
+        Role.objects.create(user=user)
+        auth.delete()
     
         return Response({
             "status": "success",
@@ -86,7 +90,6 @@ class AuthViewSets(viewsets.ViewSet):
                 "gender": user.gender,
                 'sector': user.sector,
             },
-        # 'token': token
         }, status=status.HTTP_201_CREATED)
 
 
