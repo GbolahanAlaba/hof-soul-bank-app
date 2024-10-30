@@ -18,12 +18,14 @@ djangorestframework-simplejwt==5.3.1
 drf-extra-fields==3.7.0
 dynaconf==3.2.6
 filetype==1.2.0
+gunicorn==23.0.0
 hvac==2.3.0
 idna==3.10
 knox==0.1.14
 kombu==5.4.2
 loguru==0.7.2
 numpy==2.1.2
+packaging==24.1
 pandas==2.2.3
 pillow==10.4.0
 prompt_toolkit==3.0.48
@@ -32,6 +34,7 @@ PyJWT==2.9.0
 python-dateutil==2.9.0.post0
 pytz==2024.2
 requests==2.32.3
+rest-framework-simplejwt==0.0.2
 shortuuid==1.0.13
 six==1.16.0
 sqlparse==0.5.1
