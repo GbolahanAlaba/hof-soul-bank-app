@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'App_Auth',
+    'App_Users',
     'rest_framework',
     'knox',
     'rest_framework_simplejwt',
@@ -141,21 +142,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True # Allows cors origin for everyone
 
-REST_FRAMEWORK = {
-'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication'),
-}
-
-
 AUTH_USER_MODEL = 'App_Auth.User' # User authentication
 
 REST_FRAMEWORK = { 'DEFAULT_AUTHENTICATION_CLASSES': [ 
                     # 'rest_framework.authentication.SessionAuthentication',
                     'rest_framework.authentication.BasicAuthentication',
+                    'rest_framework_simplejwt.authentication.JWTAuthentication',
                     ],}
-
-REST_KNOX = {
-       'TOKEN_TTL': None,  # will create tokens that never expire
-    }
 
 
 AUTHENTICATION_BACKENDS = [
