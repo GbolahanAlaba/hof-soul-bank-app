@@ -6,9 +6,6 @@ from rest_framework import viewsets, permissions
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken 
 from rest_framework.authtoken.serializers import AuthTokenSerializer
-from knox.auth import TokenAuthentication
-from rest_framework.views import APIView
-from knox.auth import AuthToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication 
 from . serializers import *
