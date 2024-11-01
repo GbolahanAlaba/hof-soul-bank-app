@@ -17,7 +17,6 @@ from django.db.models import Q
 from rest_framework.decorators import action
 
 
-
 class SetupViewSets(viewsets.ViewSet):
     authentication_classes=[JWTAuthentication]
     permission_classes=[IsAuthenticated]
